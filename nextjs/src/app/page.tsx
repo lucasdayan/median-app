@@ -1,101 +1,104 @@
-import Image from "next/image";
+"use client";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { useState } from "react";
+import { Menu, X } from "lucide-react";
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+  const [isOpen, setIsOpen] = useState(false);
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+  const toggleMenu = () => {
+    setIsOpen(!isOpen);
+  };
+
+  return (
+    <div className="min-h-screen bg-[#faf9f7]">
+      <header className="flex items-center justify-between px-6 py-4 max-w-7xl mx-auto relative">
+        <Link href="/" className="text-2xl font-serif">
+          Median
+        </Link>
+
+        <nav className="hidden md:flex items-center gap-6">
+          <Link
+            href="/write"
+            className="text-sm text-gray-700 hover:text-gray-900"
           >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+            Write
+          </Link>
+          <Link
+            href="/sign-in"
+            className="text-sm text-gray-700 hover:text-gray-900"
           >
-            Read our docs
-          </a>
+            Sign in
+          </Link>
+          <Button
+            variant="default"
+            className="bg-black text-white rounded-full hover:bg-gray-800"
+          >
+            Get started
+          </Button>
+        </nav>
+
+        <button
+          onClick={toggleMenu}
+          className="md:hidden absolute right-6 top-1/2 -translate-y-1/2"
+        >
+          {isOpen ? <X size={24} /> : <Menu size={24} />}
+        </button>
+
+        {isOpen && (
+          <div className="md:hidden absolute top-full left-0 right-0 bg-white shadow-lg mt-4 z-50">
+            <nav className="flex flex-col p-4 space-y-4">
+              <Link
+                href="/write"
+                className="text-sm text-gray-700 hover:text-gray-900 block"
+                onClick={toggleMenu}
+              >
+                Write
+              </Link>
+              <Link
+                href="/sign-in"
+                className="text-sm text-gray-700 hover:text-gray-900 block"
+                onClick={toggleMenu}
+              >
+                Sign in
+              </Link>
+              <Button
+                variant="default"
+                className="bg-black text-white rounded-full hover:bg-gray-800 w-full"
+                onClick={toggleMenu}
+              >
+                Get started
+              </Button>
+            </nav>
+          </div>
+        )}
+      </header>
+
+      <main className="relative px-6 pt-24 pb-32 max-w-7xl mx-auto">
+        <div className="max-w-2xl">
+          <h1 className="text-6xl md:text-7xl font-serif leading-tight mb-6">
+            Human stories & ideas
+          </h1>
+          <p className="text-xl md:text-2xl text-gray-600 mb-8">
+            A place to read, write, and deepen your understanding
+          </p>
+          <Button
+            variant="default"
+            className="bg-black text-white rounded-full px-8 py-6 text-lg hover:bg-gray-800"
+          >
+            Start reading
+          </Button>
+        </div>
+
+        <div className="hidden md:block absolute right-0 top-0 w-96 h-96">
+          <div className="absolute right-8 top-8 w-32 h-32 bg-[#0FBF5C] rounded-full opacity-80" />
+          <div className="absolute right-24 top-16 text-2xl">★</div>
+          <div className="absolute right-48 top-32 text-xl">★</div>
+          <div className="absolute right-16 top-48 text-lg">★</div>
+          <div className="border-dashed border-gray-300 border-b rotate-45 w-48 absolute right-0 bottom-0" />
         </div>
       </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
     </div>
   );
 }
