@@ -20,23 +20,25 @@ export default function Home() {
 
         <nav className="hidden md:flex items-center gap-6">
           <Link
-            href="/write"
+            href={"/?signupmodal=true"}
             className="text-sm text-gray-700 hover:text-gray-900"
           >
             Write
           </Link>
           <Link
-            href="/sign-in"
+            href={"/?signinmodal=true"}
             className="text-sm text-gray-700 hover:text-gray-900"
           >
             Sign in
           </Link>
-          <Button
-            variant="default"
-            className="bg-black text-white rounded-full hover:bg-gray-800"
-          >
-            Get started
-          </Button>
+          <Link href={"/?signupmodal=true"}>
+            <Button
+              variant="default"
+              className="bg-black text-white rounded-full hover:bg-gray-800"
+            >
+              Get started
+            </Button>
+          </Link>
         </nav>
 
         <button
@@ -50,26 +52,28 @@ export default function Home() {
           <div className="md:hidden absolute top-full left-0 right-0 bg-white shadow-lg mt-4 z-50">
             <nav className="flex flex-col p-4 space-y-4">
               <Link
-                href="/write"
+                href={"/?signupmodal=true"}
                 className="text-sm text-gray-700 hover:text-gray-900 block"
                 onClick={toggleMenu}
               >
                 Write
               </Link>
               <Link
-                href="/sign-in"
+                href={"/?signinmodal=true"}
                 className="text-sm text-gray-700 hover:text-gray-900 block"
                 onClick={toggleMenu}
               >
                 Sign in
               </Link>
-              <Button
-                variant="default"
-                className="bg-black text-white rounded-full hover:bg-gray-800 w-full"
-                onClick={toggleMenu}
-              >
-                Get started
-              </Button>
+              <Link href={"/?signupmodal=true"}>
+                <Button
+                  variant="default"
+                  className="bg-black text-white rounded-full hover:bg-gray-800 w-full"
+                  onClick={toggleMenu}
+                >
+                  Get started
+                </Button>
+              </Link>
             </nav>
           </div>
         )}
@@ -83,12 +87,14 @@ export default function Home() {
           <p className="text-xl md:text-2xl text-gray-600 mb-8">
             A place to read, write, and deepen your understanding
           </p>
-          <Button
-            variant="default"
-            className="bg-black text-white rounded-full px-8 py-6 text-lg hover:bg-gray-800"
-          >
-            Start reading
-          </Button>
+          <Link href={"/?signupmodal=true"}>
+            <Button
+              variant="default"
+              className="bg-black text-white rounded-full px-8 py-6 text-lg hover:bg-gray-800"
+            >
+              Start reading
+            </Button>
+          </Link>
         </div>
 
         <div className="hidden md:block absolute right-0 top-0 w-96 h-96">
