@@ -5,25 +5,27 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useSearchParams } from "next/navigation";
+import Link from "next/link";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { z } from "zod";
-import Link from "next/link";
-
-export default function SignInModal() {
+export default function SignUpModal() {
   const searchParams = useSearchParams();
-  const modal = searchParams.get("signinmodal");
+  const modal = searchParams.get("signupmodal");
 
-  const signInSchema = z.object({
+  const signUpSchema = z.object({
+    name: z.string().min(2, { message: "Name must be at least 2 characters" }),
     email: z.string().email(),
-    password: z.string().min(8),
+    password: z
+      .string()
+      .min(8, { message: "Password must be at least 8 characters long" }),
   });
 
-  type loginSchema = z.infer<typeof signInSchema>;
+  type loginSchema = z.infer<typeof signUpSchema>;
 
   const { register, handleSubmit, formState, clearErrors, reset } =
     useForm<loginSchema>({
-      resolver: zodResolver(signInSchema),
+      resolver: zodResolver(signUpSchema),
     });
 
   const onSubmit: SubmitHandler<loginSchema> = (data) => {
@@ -51,11 +53,25 @@ export default function SignInModal() {
                   Sign up with email
                 </h1>
                 <p className="text-muted-foreground">
-                  Enter your credentials below to log into your account.
+                  Enter your information below to create an account.
                 </p>
               </div>
-              <form onSubmit={handleSubmit(onSubmit)}>
-                <div className="space-y-4">
+
+              <div className="space-y-4">
+                <form onSubmit={handleSubmit(onSubmit)}>
+                  <div className="space-y-2">
+                    <Label htmlFor="email">Your name</Label>
+                    <Input
+                      placeholder="John Doe"
+                      type="name"
+                      {...register("name")}
+                    />
+                    {formState.errors.name && (
+                      <p className="text-xs text-red-400 m-1">
+                        {formState.errors.name.message}
+                      </p>
+                    )}
+                  </div>
                   <div className="space-y-2">
                     <Label htmlFor="email">Your email</Label>
                     <Input
@@ -78,19 +94,21 @@ export default function SignInModal() {
                       </p>
                     )}
                   </div>
-                  <Button className="w-full" size="lg">
-                    Log in
-                  </Button>
-                  <div className="space-y-4 text-center text-sm">
+                  
+                    <Button className="w-full mt-1" size="lg">
+                      Create
+                    </Button>
+                  
+                  <div className="space-y-4 text-center text-sm mt-1">
                     <Link
-                      href={"/?signupmodal=true"}
+                      href={"/?signinmodal=true"}
                       className="inline-flex items-center text-gray-600 hover:text-gray-700"
                     >
-                      Doesn't have an account? Sign up now!
+                      Already have an account? Sign in
                     </Link>
                   </div>
-                </div>
-              </form>
+                </form>
+              </div>
             </div>
           </div>
         </div>

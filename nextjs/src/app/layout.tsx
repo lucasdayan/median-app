@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
-import SignUpModal from "@/components/ui/sign-up.modal";
+import SignUpModal from "@/components/sign-up.modal";
 import SignInModal from "@/components/sign-in.modal";
 
 const geistSans = localFont({
