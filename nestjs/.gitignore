@@ -52,5 +52,8 @@ build/config\.gypi
 pnpm-lock.yaml
 /.history
 
+# Ignore dist/ folder
+dist/
+
 
 .env
