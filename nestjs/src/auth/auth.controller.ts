@@ -21,7 +21,8 @@ export class AuthController {
     @Body() body: SignInDto,
     @Res({ passthrough: true }) res: Response
   ) {
-    return await this.authService.signIn(body.email, body.password, res);
+    await this.authService.signIn(body.email, body.password, res);
+    return { message: "Login successful" };
   }
 
   @UseGuards(AuthGuard)

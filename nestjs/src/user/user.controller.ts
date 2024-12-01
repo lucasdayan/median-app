@@ -14,10 +14,33 @@ import { AuthGuard } from "src/auth/auth.guard";
 @Controller("user")
 export class UserController {
   constructor(private readonly userService: UserService) {}
+
   @Post()
-  async createUser(@Body() body: CreateUserDto) {
-    return this.userService.createUser(body);
+async createUser(@Body() createUserDto: CreateUserDto) {
+  try {
+    const user = await this.userService.createUser(createUserDto);
+    return { success: true, user };
+  } catch (error) {
+    if (error.code === "P2002") {
+      return {
+        success: false,
+        user: {
+          message: "Email already exists",
+          status: 400,
+          error: true
+        }
+      };
+    }
+    return {
+      success: false,
+      user: {
+        message: "Internal Server Error",
+        status: 500,
+        error: true
+      }
+    };
   }
+}
 
   @UseGuards(AuthGuard)
   @Get("/:id")

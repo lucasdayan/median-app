@@ -8,9 +8,17 @@ export class UserService {
   constructor(private prisma: PrismaService) {}
 
   async createUser(data: CreateUserDto) {
-    console.log(bcrypt);
     try {
       const { name, email, password } = data;
+
+      const emailExists = await this.prisma.user.findUnique({
+        where: {
+          email,
+        },
+      });
+      if (emailExists) {
+        throw new Error("Email already exists");
+      }
 
       const salt = await bcrypt.genSalt(10);
 
