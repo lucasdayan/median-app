@@ -3,6 +3,7 @@ import { UserService } from "src/user/user.service";
 import { JwtService } from "@nestjs/jwt";
 import { UnauthorizedException } from "@nestjs/common";
 import * as bcrypt from "bcrypt";
+import { Response } from "express";
 
 @Injectable()
 export class AuthService {
@@ -11,7 +12,7 @@ export class AuthService {
     private readonly jwtService: JwtService
   ) {}
 
-  async signIn(email: string, pass: string): Promise<{ access_token: string }> {
+  async signIn(email: string, pass: string, res: Response): Promise<void> {
     const user = await this.userService.getUserByEmail(email);
     if (!user) {
       throw new NotFoundException();
@@ -21,9 +22,21 @@ export class AuthService {
     if (!isPasswordValid) {
       throw new UnauthorizedException();
     }
+
+    const expires = new Date();
+    expires.setHours(expires.getHours() + 1);
+
     const payload = { sub: user.id, username: user.email };
-    return {
-      access_token: await this.jwtService.signAsync(payload),
-    };
+    const token = this.jwtService.sign(payload);
+    res.cookie("auth", token, {
+      expires,
+      httpOnly: true,
+      secure: true,
+      sameSite: "none",
+    });
+  }
+
+  async logout(res: Response): Promise<void> {
+    res.clearCookie("auth");
   }
 }

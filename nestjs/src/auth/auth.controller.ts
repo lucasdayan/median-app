@@ -1,13 +1,38 @@
-import { Controller, Post, Body } from "@nestjs/common";
+import {
+  Controller,
+  Post,
+  Body,
+  UseGuards,
+  Get,
+  Request,
+  Res,
+} from "@nestjs/common";
 import { AuthService } from "./auth.service";
 import { SignInDto } from "./dto/auth.dto";
+import { AuthGuard } from "src/auth/auth.guard";
+import { Response } from "express";
 
 @Controller("auth")
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @Post("login")
-  signIn(@Body() body: SignInDto) {
-    return this.authService.signIn(body.email, body.password);
+  async signIn(
+    @Body() body: SignInDto,
+    @Res({ passthrough: true }) res: Response
+  ) {
+    return await this.authService.signIn(body.email, body.password, res);
+  }
+
+  @UseGuards(AuthGuard)
+  @Get("profile")
+  async getProfile(@Request() req) {
+    return req.user;
+  }
+
+  @Post("logout")
+  async logout(@Res({ passthrough: true }) res: Response) {
+    await this.authService.logout(res);
+    return { message: "Logout successful" };
   }
 }
