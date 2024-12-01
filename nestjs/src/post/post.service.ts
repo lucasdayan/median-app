@@ -7,13 +7,20 @@ export class PostService {
   constructor(private prisma: PrismaService) {}
 
   async getAllPosts() {
-    return this.prisma.post.findMany();
+    return this.prisma.post.findMany({
+      include: {
+        author: true,
+      },
+    });
   }
 
   async getPostById(id: string) {
     return this.prisma.post.findUnique({
       where: {
         id,
+      },
+      include: {
+        author: true,
       },
     });
   }
