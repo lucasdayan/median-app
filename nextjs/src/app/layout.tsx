@@ -3,6 +3,9 @@ import localFont from "next/font/local";
 import "./globals.css";
 import SignUpModal from "@/components/sign-up.modal";
 import SignInModal from "@/components/sign-in.modal";
+import { Toaster } from "@/components/ui/toaster";
+import { AuthProvider } from "@/context/auth-context";
+import ProtectedRoute from "@/components/protected-route";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -30,9 +33,14 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <SignUpModal />
-        <SignInModal />
-        {children}
+        <AuthProvider>
+          <ProtectedRoute>
+            <SignUpModal />
+            <SignInModal />
+            {children}
+            <Toaster />
+          </ProtectedRoute>
+        </AuthProvider>
       </body>
     </html>
   );

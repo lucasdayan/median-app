@@ -9,16 +9,19 @@ import Link from "next/link";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { z } from "zod";
+import { useToast } from "@/hooks/use-toast";
+import { useAuth } from "@/context/auth-context";
 export default function SignUpModal() {
   const searchParams = useSearchParams();
   const modal = searchParams.get("signupmodal");
-
+  const { login } = useAuth();
+  const { toast } = useToast();
   const signUpSchema = z.object({
     name: z.string().min(2, { message: "Name must be at least 2 characters" }),
     email: z.string().email(),
     password: z
       .string()
-      .min(8, { message: "Password must be at least 8 characters long" }),
+      .min(6, { message: "Password must be at least 6 characters long" }),
   });
 
   type loginSchema = z.infer<typeof signUpSchema>;
@@ -28,8 +31,43 @@ export default function SignUpModal() {
       resolver: zodResolver(signUpSchema),
     });
 
-  const onSubmit: SubmitHandler<loginSchema> = (data) => {
-    console.log(data);
+  const onSubmit: SubmitHandler<loginSchema> = async (data) => {
+    clearErrors();
+    try {
+      const response = await fetch("http://localhost:5000/user", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+
+      const responseData = await response.json();
+
+      if (!response.ok || responseData.user?.error) {
+        toast({
+          variant: "destructive",
+          title: "Sign-up failed",
+          description: responseData.user?.message || "Something went wrong.",
+        });
+        return { success: false };
+      }
+
+      toast({
+        variant: "default",
+        title: "Account created",
+        description: "You can now sign in.",
+      });
+      await login(data.email, data.password);
+      return { success: true };
+    } catch (error) {
+      toast({
+        variant: "destructive",
+        title: "Signup error",
+        description: "Something went wrong. Please try again later.",
+      });
+      return { success: false };
+    }
   };
   return (
     <>
@@ -94,11 +132,11 @@ export default function SignUpModal() {
                       </p>
                     )}
                   </div>
-                  
-                    <Button className="w-full mt-1" size="lg">
-                      Create
-                    </Button>
-                  
+
+                  <Button className="w-full mt-1" size="lg">
+                    Create
+                  </Button>
+
                   <div className="space-y-4 text-center text-sm mt-1">
                     <Link
                       href={"/?signinmodal=true"}

@@ -1,15 +1,25 @@
 "use client";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Menu, X } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useAuth } from "@/context/auth-context";
 
 export default function Home() {
   const [isOpen, setIsOpen] = useState(false);
+  const { isAuthenticated } = useAuth();
+  const router = useRouter();
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
   };
+
+  useEffect(() => {
+    if (isAuthenticated()) {
+      router.push("/feed");
+    }
+  }, [isAuthenticated]);
 
   return (
     <div className="min-h-screen bg-[#faf9f7]">

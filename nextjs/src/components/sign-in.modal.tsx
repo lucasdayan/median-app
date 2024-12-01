@@ -9,14 +9,16 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { z } from "zod";
 import Link from "next/link";
+import { useAuth } from "@/context/auth-context";
 
 export default function SignInModal() {
   const searchParams = useSearchParams();
   const modal = searchParams.get("signinmodal");
+  const { login } = useAuth();
 
   const signInSchema = z.object({
     email: z.string().email(),
-    password: z.string().min(8),
+    password: z.string().min(6),
   });
 
   type loginSchema = z.infer<typeof signInSchema>;
@@ -26,8 +28,9 @@ export default function SignInModal() {
       resolver: zodResolver(signInSchema),
     });
 
-  const onSubmit: SubmitHandler<loginSchema> = (data) => {
-    console.log(data);
+  const onSubmit: SubmitHandler<loginSchema> = async (data) => {
+    clearErrors();
+    await login(data.email, data.password);
   };
   return (
     <>
