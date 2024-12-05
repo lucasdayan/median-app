@@ -1,4 +1,5 @@
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
+import Link from "next/link";
 
 const AvatarIcon = () => {
   const svgData = encodeURIComponent(`
@@ -13,10 +14,12 @@ const AvatarIcon = () => {
   const svgUrl = `data:image/svg+xml,${svgData}`;
 
   return (
-    <Avatar className="mx-2">
-      <AvatarImage src={svgUrl} />
-      <AvatarFallback>{svgUrl}</AvatarFallback>
-    </Avatar>
+    <Link href="/profile">
+      <Avatar className="mx-2">
+        <AvatarImage src={svgUrl} />
+        <AvatarFallback>{svgUrl}</AvatarFallback>
+      </Avatar>
+    </Link>
   );
 };
 
