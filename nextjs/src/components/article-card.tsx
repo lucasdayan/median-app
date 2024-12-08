@@ -3,12 +3,14 @@ import Link from "next/link";
 export default function ArticleCard({
   id,
   author,
+  authorId,
   title,
   description,
   date,
 }: {
   id: string;
   author: string;
+  authorId: string;
   title: string;
   description: string;
   date: string;
@@ -26,7 +28,11 @@ export default function ArticleCard({
           : description}
       </p>
       <div className="flex items-center gap-4 text-sm text-muted-foreground">
-        <span>by {author}</span>
+        <span>
+          <a href={`/author/${authorId}`} className="font-medium hover:underline">
+                  by {author}
+          </a>
+        </span>
         <span>{date}</span>
       </div>
     </article>

@@ -7,7 +7,7 @@ import { useAuth } from "@/context/auth-context";
 
 export default function Profile() {
   const [articles, setArticles] = useState<IArticle[]>([]);
-  const [author, setAuthor] = useState<User>(null);
+  const [author, setAuthor] = useState<User>();
   const { user } = useAuth();
   useEffect(() => {
     const fetchArticles = async () => {
@@ -53,7 +53,8 @@ export default function Profile() {
               <ArticleCard
                 key={article.id}
                 id={article.id}
-                author={author.name}
+                author={author?.name || 'Anonymous'}
+                authorId={author?.id || ''}
                 title={article.title}
                 description={article.content}
                 date={formattedDate}

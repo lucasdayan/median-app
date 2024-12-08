@@ -53,7 +53,9 @@ export default function Article() {
           <div className="flex items-center space-x-4 py-4 border-b">
             <div className="space-y-1">
               <div className="flex items-center space-x-2">
-                <span className="font-medium">{article?.author?.name}</span>
+                <a href={`/author/${article?.author?.id}`} className="font-medium hover:underline">
+                  {article?.author?.name}
+                </a>
               </div>
               <div className="flex items-center text-sm text-muted-foreground">
                 <span>
