@@ -47,6 +47,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
           setUser(data);
         } else {
           setUser(null);
+          console.info("User is not authenticated");
         }
       } catch (error) {
         console.error("Error checking authentication:", error);
