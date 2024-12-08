@@ -31,7 +31,7 @@ export class PostService {
   }
 
   async getPostByUserId(userId: string) {
-    const user = this.userService.getUserById(userId)
+    const user = await this.userService.getUserById(userId)
     const articles =  await this.prisma.post.findMany({
       where: {
         authorId: userId,

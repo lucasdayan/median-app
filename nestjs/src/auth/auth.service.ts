@@ -13,7 +13,7 @@ export class AuthService {
   ) {}
 
   async signIn(email: string, pass: string, res: Response): Promise<void> {
-    const user = await this.userService.getUserByEmail(email);
+    const user = await this.userService.getUserByEmail(email, false);
     if (!user) {
       throw new NotFoundException();
     }
