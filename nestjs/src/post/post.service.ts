@@ -1,10 +1,15 @@
 import { Injectable } from "@nestjs/common";
 import { PrismaService } from "src/database/prisma.service";
 import { CreatePostDto } from "./dto/post.dto";
+import { UserService } from "src/user/user.service";
 
 @Injectable()
 export class PostService {
-  constructor(private prisma: PrismaService) {}
+  userService: UserService;
+
+  constructor(private prisma: PrismaService) {
+    this.userService = new UserService(this.prisma)
+  }
 
   async getAllPosts() {
     return this.prisma.post.findMany({
@@ -26,11 +31,16 @@ export class PostService {
   }
 
   async getPostByUserId(userId: string) {
-    return this.prisma.post.findMany({
+    const user = this.userService.getUserById(userId)
+    const articles =  await this.prisma.post.findMany({
       where: {
         authorId: userId,
       },
     });
+    return {
+      author: user,
+      articles: articles
+    }
   }
 
   async createPost(body: CreatePostDto) {
